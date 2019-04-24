@@ -14,8 +14,9 @@ s.listen(1)
 conn, addr = s.accept()
 print ("Connection address:", addr)
 while 1:
-    data = conn.recv(BUFFER_SIZE).decode()
+    data = conn.recv(BUFFER_SIZE)
     if not data: break
-    print ("received data: ", data)
-    conn.send(data.encode())  # echo
+    print ("received data: ", data.decode())
+    conn.send(data)  # echo
 conn.close()
+
