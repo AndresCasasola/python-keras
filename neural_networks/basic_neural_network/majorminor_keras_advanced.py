@@ -15,8 +15,8 @@ from keras.metrics import categorical_crossentropy
 from keras.utils.vis_utils import plot_model
 
 # ----- Script parameters ----- #
-RESULT_SIZE = 6;					# Number of values showed
-TRAINING_EPOCHS = 15;			# Number of epochs to train
+RESULT_SIZE = 6;          # Number of values showed
+TRAINING_EPOCHS = 15;     # Number of epochs to train
 
 # ----- Functions ----- #
 def show_values(num):
