@@ -22,6 +22,7 @@ TRAINING_EPOCHS = 15;     # Number of epochs to train
 def show_values(num):
 	sys.stdout.write("\n--------------------------------------------------------------------------------\n")
 	sys.stdout.write("---------------------------------- Results -------------------------------------")
+	sys.stdout.write("----------------------------- Is bigger than 25? -------------------------------")
 	sys.stdout.write("\n--------------------------------------------------------------------------------\n")
 	print("\tTraining values (A):")
 	for i in range (num):
@@ -37,7 +38,7 @@ def show_values(num):
 	for i in range(num):
 		sys.stdout.write("	%d" %x_array[i])
 	sys.stdout.write("\n	-------------------------------------------------------\n")
-	print("\tPrediction solutions (Is X bigger than 25?):")
+	print("\tPrediction solutions:")
 	for i in range(num):
 		sys.stdout.write("	%.2f" %predictions[i][1])
 	sys.stdout.write("\n")
