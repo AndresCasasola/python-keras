@@ -16,8 +16,8 @@ from keras.utils.vis_utils import plot_model
 
 # ----- Script parameters ----- #
 RESULT_SIZE = 8;          # Number of values showed
-TRAINING_EPOCHS = 5;     # Number of epochs to train
-BATCH_SIZE = 10;          # Number of training examples (Samples per training)
+TRAINING_EPOCHS = 20;     # Number of epochs to train
+BATCH_SIZE = 1000;          # Number of training examples (Samples per training)
 NUM_SAMPLES = 1000;      # Number of samples in arrays
 
 # ----- Functions ----- #
@@ -45,11 +45,27 @@ def show_values(num):
 		sys.stdout.write("	%d" %rounded_predictions[i])
 	sys.stdout.write("\n")
 	for i in range(num):
-		sys.stdout.write("	%.2f/1" %predictions[i][1])
+		sys.stdout.write("	%.2f" %predictions[i][1])
 	sys.stdout.write("\n	-------------------------------------------------------\n")
-	print("\tStatistics:")
-	# Statistics
-
+	print("\tStatistics (error):")
+	# Calcule error
+	error = 0
+	average_error = 0
+	average_accuracy = 0
+	for i in range (NUM_SAMPLES):
+		#if x_list[i]>=25:
+		if x_list[i]%2 == 0:
+			error = 1.00-predictions[i][1]
+		else:
+			error = predictions[i][1]
+		average_error = average_error + error;
+		if i < RESULT_SIZE:
+			sys.stdout.write("	%.2f" %error)
+	# Calcule and show averages
+	average_error = (average_error/NUM_SAMPLES)
+	average_accuracy = 1.00 - average_error
+	sys.stdout.write("\n	Average error: %.2f" %average_error)
+	sys.stdout.write("	Average accuracy: %.2f" %average_accuracy)
 
 	sys.stdout.write("\n--------------------------------------------------------------------------------\n")
 	sys.stdout.write("--------------------------------------------------------------------------------")
@@ -67,10 +83,11 @@ for i in range (NUM_SAMPLES):
 	a_value = randint(0, 51)
 	x_value = randint(0, 51)
 
-	if a_value<25:
+	#if a_value<25:
+	if a_value%2 == 1:
 		c_value = 0	# Is impar
 	else:
-		c_value = 1	# Is impar
+		c_value = 1	# Is par
 
 	a_list.append(a_value)
 	c_list.append(c_value)
@@ -113,18 +130,6 @@ rounded_predictions = model.predict_classes(scaled_x_samples, batch_size=BATCH_S
 
 # Show results
 show_values(RESULT_SIZE)
-
-prob_full = 0
-for i in range (NUM_SAMPLES):
-	if c_list == 1:
-		prob = predictions
-	else:
-		prob = predictions-0.5
-	prob = prob*2;
-	prob_full = prob_full + prob;
-	sys.stdout.write("	%.2f" %prob)
-prob_full /= NUM_SAMPLES
-sys.stdout.write("	Success probability: " %prob_full)
 
 
 
