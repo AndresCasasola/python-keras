@@ -21,9 +21,11 @@
 import pandas as pd
 
 # Read in white wine data 
-white = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep=';')
+#white = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep=';')
+white = pd.read_csv("./datasets/winequality-white.csv", sep=';') # Load data from local file
 # Read in red wine data 
-red = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv", sep=';')
+#red = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv", sep=';')
+red = pd.read_csv("./datasets/winequality-red.csv", sep=';') # Load data from local file
 
 ########## Data exploration
 # Print info on white wine
