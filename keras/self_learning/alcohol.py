@@ -29,9 +29,9 @@ red = pd.read_csv("./datasets/winequality-red.csv", sep=';') # Load data from lo
 
 ########## Data exploration
 # Print info on white wine
-#print(white.info())
+print(white.info())
 # Print info on red wine
-#print(red.info())
+print(red.info())
 
 ########## Show raw data
 """
@@ -131,7 +131,7 @@ model.compile(loss='binary_crossentropy',
               metrics=['accuracy'])
 # Fit the model during 20 epochs. Batch size is the number of samples that will be 
 # propagated through the network every epoch.
-model.fit(X_train, y_train,epochs=1, batch_size=1, verbose=1)
+model.fit(X_train, y_train,epochs=10, batch_size=1, verbose=1)
 
 ########## Predict
 y_pred = model.predict(X_test)
