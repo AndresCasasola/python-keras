@@ -79,6 +79,8 @@ In my results i did not train the model (computer not powerful enough), instead 
 
 ![Figure 10](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_images.png "Figure 10")
 
+*Predictions* are the values calculed by the neural network and *Solutions* are the correct values from the dataset.
+
 ![Figure 11](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_results.png "Figure 11")
 
 
