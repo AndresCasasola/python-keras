@@ -165,8 +165,8 @@ model.fit_generator(datagen.flow(x_train, y_train,
                                  batch_size=batch_size),
                     epochs=epochs,
                     validation_data=(x_test, y_test), 
-										workers=0,
-										steps_per_epoch=steps_per_epoch)
+					workers=0,
+					steps_per_epoch=steps_per_epoch)
 
 
 ########## Save model and weights
