@@ -107,4 +107,3 @@ rounded_predictions = model.predict_classes(scaled_x_samples, batch_size=10, ver
 show_values(RESULT_SIZE)
 
 
-
