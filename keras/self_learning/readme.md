@@ -40,8 +40,10 @@ Then creates and trains a sequential neural network model to predict the type of
 
 ##### Wine information loaded:
 - White wine:
+
 ![Figure 4](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/alcohol_whiteinfo.png "Figure 4")
 - Red wine:
+
 ![Figure 5](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/alcohol_redinfo.png "Figure 5")
 
 ##### Model summary:
