@@ -1,6 +1,6 @@
 # Some python code
 
-## cifar10.py example in keras/self_learning
+## [cifar10.py](https://github.com/AndresCasasola/python-keras/raw/master/keras/self_learning/cifar10.py) example
 
 This program takes data from cifar10 dataset with 50.000 training and 10.000 testing samples of 32x32 images with 10 categories (frog, dog, truck, car...).
 Then creates a sequential neural network model to predict the category of each image.
