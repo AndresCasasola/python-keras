@@ -15,10 +15,11 @@ from keras.metrics import categorical_crossentropy
 from keras.utils.vis_utils import plot_model
 
 # ----- Script parameters ----- #
-RESULT_SIZE = 9;					# Number of values showed
-TRAINING_EPOCHS = 20;			# Number of epochs to train
-BATCH_SIZE = 10;					# Number of training examples (Samples per training)
-NUM_SAMPLES = 10000;			# Number of samples in arrays
+RESULT_SIZE = 9;						# Number of values showed
+TRAINING_EPOCHS = 20;				# Number of epochs to train
+BATCH_SIZE = 10;						# Number of training examples (Samples per training)
+NUM_SAMPLES = 10000;				# Number of samples in arrays
+EVALUATION_SAMPLES = 10000;	# Number of samples to evaluate
 
 # ----- Functions ----- #
 def show_values(num):
@@ -33,9 +34,7 @@ def show_values(num):
 	print("\tTraining solutions (C):")	
 	for i in range(num):
 		sys.stdout.write("	%d" %c_array[i])
-
 	sys.stdout.write("\n	-------------------------------------------------------\n")
-
 	print("\tPrediction values (X):")
 	for i in range(num):
 		sys.stdout.write("	%d" %x_array[i])
@@ -45,28 +44,7 @@ def show_values(num):
 		sys.stdout.write("	%d" %rounded_predictions[i])
 	sys.stdout.write("\n")
 	for i in range(num):
-		sys.stdout.write("	%.2f" %predictions[i][1])
-	sys.stdout.write("\n	-------------------------------------------------------\n")
-	print("\tStatistics (error):")
-	# Calcule error
-	error = 0
-	average_error = 0
-	average_accuracy = 0
-	for i in range (NUM_SAMPLES):
-		if x_list[i]>=25:
-		#if x_list[i]%2 == 0:
-			error = 1.00-predictions[i][1]
-		else:
-			error = predictions[i][1]
-		average_error = average_error + error;
-		if i < RESULT_SIZE:
-			sys.stdout.write("	%.2f" %error)
-	# Calcule and show averages
-	average_error = (average_error/NUM_SAMPLES)
-	average_accuracy = 1.00 - average_error
-	sys.stdout.write("\n	Average error: %.2f" %average_error)
-	sys.stdout.write("	Average accuracy: %.2f" %average_accuracy)
-
+		sys.stdout.write("	%.2f" %predictions[i])
 	sys.stdout.write("\n--------------------------------------------------------------------------------\n")
 	sys.stdout.write("--------------------------------------------------------------------------------")
 	sys.stdout.write("\n--------------------------------------------------------------------------------\n")
@@ -84,10 +62,9 @@ for i in range (NUM_SAMPLES):
 	x_value = randint(0, 50)
 
 	if a_value<25:
-	#if a_value%2 == 1:
-		c_value = 0	# Is impar
+		c_value = 0	# Is not bigger
 	else:
-		c_value = 1	# Is par
+		c_value = 1	# Is bigger
 
 	a_list.append(a_value)
 	c_list.append(c_value)
@@ -107,7 +84,7 @@ scaled_x_samples = scaler.fit_transform((x_array).reshape(-1,1))
 model = Sequential([
     Dense(16, input_shape=(1,), activation = 'relu'),		# input_shape=(1,) <=> input_dim=1
     Dense(32, activation = 'relu'),
-    Dense(2, activation = 'softmax'),
+		Dense(1, activation = 'sigmoid'),
 ])
 
 model.summary()
@@ -117,18 +94,25 @@ model.summary()
 
 # Training neural network
 print("Training...")
-model.compile(Adam(lr=.0001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(scaled_a_samples, scaled_c_samples, validation_split = 0.1, batch_size=BATCH_SIZE, epochs=TRAINING_EPOCHS, shuffle=True, verbose=2);
+# Batch size is the number of samples that will be propagated through the network every epoch.
+model.fit(scaled_a_samples, scaled_c_samples, epochs=TRAINING_EPOCHS, batch_size=BATCH_SIZE, verbose=1)
 
 # Predicting
 print("Predicting...") # Probability
 predictions = model.predict(scaled_x_samples, batch_size=BATCH_SIZE, verbose=0)
 
-print("Rounded predictions...") # Binary result
+print("Rounding predictions...") # Binary result
 rounded_predictions = model.predict_classes(scaled_x_samples, batch_size=BATCH_SIZE, verbose=0)
 
 # Show results
 show_values(RESULT_SIZE)
+
+########## Evaluate trained model and show score
+print("Evaluation: ")
+score = model.evaluate(scaled_a_samples[:EVALUATION_SAMPLES], scaled_c_samples[:EVALUATION_SAMPLES], verbose=1)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
 
 
