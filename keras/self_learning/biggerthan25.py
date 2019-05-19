@@ -4,6 +4,7 @@ import numpy as np
 import sys
 import time
 from random import randint
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 import keras
 from keras import backend as K
@@ -17,7 +18,7 @@ from keras.utils.vis_utils import plot_model
 # ----- Script parameters ----- #
 RESULT_SIZE = 9;						# Number of values showed
 TRAINING_EPOCHS = 20;				# Number of epochs to train
-BATCH_SIZE = 10;						# Number of training examples (Samples per training)
+BATCH_SIZE = 50;						# Number of training examples (Samples per training)
 NUM_SAMPLES = 10000;				# Number of samples in arrays
 EVALUATION_SAMPLES = 10000;	# Number of samples to evaluate
 
@@ -97,7 +98,20 @@ print("Training...")
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Batch size is the number of samples that will be propagated through the network every epoch.
-model.fit(scaled_a_samples, scaled_c_samples, epochs=TRAINING_EPOCHS, batch_size=BATCH_SIZE, verbose=1)
+history = model.fit(scaled_a_samples, scaled_c_samples, epochs=TRAINING_EPOCHS, batch_size=BATCH_SIZE, verbose=1)
+
+# Plot accuracy and loss history in training
+plt.subplot(1,2,1)
+plt.plot(history.history['acc'])
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.title('Accuracy vs epochs')
+plt.subplot(1,2,2)
+plt.plot(history.history['loss'])
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.title('Loss vs epochs')
+plt.show()
 
 # Predicting
 print("Predicting...") # Probability
