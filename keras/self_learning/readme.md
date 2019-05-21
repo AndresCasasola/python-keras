@@ -30,7 +30,7 @@ Then creates a sequential neural network model to predict the category of each i
 
 ![Figure 11](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_results.png "Figure 11")
 
-## bigger_than25.py example
+## *Biggerthan25*
 This program creates four arrays:
 - *x_train* and *x_test*: **integer** input values between 0 and 50.
 - *y_train* and *y_test*: **binary** output solution.
@@ -62,7 +62,7 @@ Then the neural network train and predict.
 
 ![Figure 3](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/biggerthan25_results.png "Figure 3")
 
-## alcohol.py example
+## *Wine*
 This program loads data (acidity, sugar, density,  pH,  alcohol...) from two csv files that contains info about two types of wine, red and white.
 
 Then creates and trains a sequential neural network model to predict the type of wine (red or white) using the loaded data as input.
