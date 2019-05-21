@@ -3,7 +3,7 @@
 ## *Cifar 10*
 ##### Training to recognize images
 
-##### Intro:
+##### Description:
 
 This program takes data from cifar10 dataset with 50.000 training and 10.000 testing samples of 32x32 images with 10 categories (frog, dog, truck, car...).
 Then creates a sequential neural network model to predict the category of each image.
@@ -32,7 +32,7 @@ Then creates a sequential neural network model to predict the category of each i
 ![Figure 11](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_results.png "Figure 11")
 
 ## *Biggerthan25*
-##### Intro:
+##### Description:
 This program creates four arrays:
 - *x_train* and *x_test*: **integer** input values between 0 and 50.
 - *y_train* and *y_test*: **binary** output solution.
@@ -64,7 +64,7 @@ Then the neural network train and predict.
 ![Figure 3](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/biggerthan25_results.png "Figure 3")
 
 ## *Wine*
-##### Intro:
+##### Description:
 This program loads data (acidity, sugar, density,  pH,  alcohol...) from two csv files that contains info about two types of wine, red and white.
 
 Then creates and trains a sequential neural network model to predict the type of wine (red or white) using the loaded data as input.
