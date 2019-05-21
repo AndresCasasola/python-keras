@@ -1,6 +1,6 @@
 # Keras examples
 
-## *Cifar 10*
+## [*Cifar 10*](https://github.com/AndresCasasola/python-keras/raw/master/keras/self_learning)
 ##### Training to recognize images
 
 ##### Description:
