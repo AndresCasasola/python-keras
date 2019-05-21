@@ -1,26 +1,21 @@
 # Keras examples
 
 ## *Cifar 10*
-##### Training to recognize images.
+##### Training to recognize images
 
 This program takes data from cifar10 dataset with 50.000 training and 10.000 testing samples of 32x32 images with 10 categories (frog, dog, truck, car...).
 Then creates a sequential neural network model to predict the category of each image.
 
 #### Results:
-
 ##### Parameters used:
 - Training epochs: 50
 - Batch size: 32
 - Steps per epoch: 1000
 - Evaluation samples: 200
 
-##### Model summary:
-
-![Figure 1](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/biggerthan25_model_summary.png "Figure 1")
-
 ##### Model training:
 
-![Figure 2](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/acc72_data.svg "Figure 2")
+![Figure 2](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/acc72_data.png "Figure 2")
 
 
 ##### Evaluation:
