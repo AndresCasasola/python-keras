@@ -1,12 +1,51 @@
 # Keras examples
+
+## *Cifar 10*
+##### Training to recognize images.
+
+This program takes data from cifar10 dataset with 50.000 training and 10.000 testing samples of 32x32 images with 10 categories (frog, dog, truck, car...).
+Then creates a sequential neural network model to predict the category of each image.
+
+#### Results:
+
+##### Parameters used:
+- Training epochs: 50
+- Batch size: 32
+- Steps per epoch: 1000
+- Evaluation samples: 200
+
+##### Model summary:
+
+![Figure 1](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/biggerthan25_model_summary.png "Figure 1")
+
+##### Model training:
+
+![Figure 2](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/acc72_data.svg "Figure 2")
+
+
+##### Evaluation:
+
+![Figure 10](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_evaluation.png "Figure 10")
+
+##### Results:
+
+![Figure 10](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_images.png "Figure 10")
+
+*Predictions* are the values calculed by the neural network and *Solutions* are the correct values from the dataset.
+
+![Figure 11](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_results.png "Figure 11")
+
 ## bigger_than25.py example
 This program creates four arrays:
-- x_train and x_test: **integer** input values between 0 and 50 for the neural network.
-- y_train and y_test: **binary** output solution.
+- *x_train* and *x_test*: **integer** input values between 0 and 50.
+- *y_train* and *y_test*: **binary** output solution.
 
 The condition to learn for the neural network is: 
 - For inputs **bigger than 25 or equal** the solution is **1**.
 - For inputs **smaller than 25** the solution is **0**.
+- Example:
+    - *x_train = 30* | *y_train = 1*
+    - *x_train = 20* | *y_train = 0*
 
 Then the neural network train and predict.
 
@@ -61,27 +100,6 @@ Then creates and trains a sequential neural network model to predict the type of
 ##### Results:
 
 ![Figure 9](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/alcohol_results.png "Figure 9")
-
-## cifar10.py example
-
-This program takes data from cifar10 dataset with 50.000 training and 10.000 testing samples of 32x32 images with 10 categories (frog, dog, truck, car...).
-Then creates a sequential neural network model to predict the category of each image.
-
-### Results:
-
-In my results i did not train the model (computer not powerful enough), instead i loaded the file *keras_cifar10_trained_model.h5* that contains the weights of a trained model with 78% accuracy.
-
-##### Evaluation:
-
-![Figure 10](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_evaluation.png "Figure 10")
-
-##### Results:
-
-![Figure 10](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_images.png "Figure 10")
-
-*Predictions* are the values calculed by the neural network and *Solutions* are the correct values from the dataset.
-
-![Figure 11](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/cifar10_results.png "Figure 11")
 
 
 
