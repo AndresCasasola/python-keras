@@ -98,7 +98,7 @@ while run:
 screen.fill(background)
 endTextSurface = gameFont.render('- YOU DIED -', 1, font)
 endScoreSurface = gameFont.render('Score: ' + str(score), 1, font)
-exitButton = pygame.image.load("./images/exit_button2_black.png")
+exitButton = pygame.image.load("./images/exit_button_black.png")
 exitButtonRect = exitButton.get_rect()
 screen.blit(endTextSurface, (width/2-(endTextSurface.get_width()/2), height/3-(endTextSurface.get_height()/2)))
 screen.blit(endScoreSurface, (width/2-(endScoreSurface.get_width()/2), height/2-(endScoreSurface.get_height()/2)))
