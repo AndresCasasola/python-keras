@@ -1,33 +1,34 @@
 
 import sys, pygame, random
 
+if getattr(sys, 'frozen', False):
+    os.chdir(sys._MEIPASS)
+
 # Start mixer with 22050Hz, 2 channels, 16 bit sample size
 # Init mixer before pygame, otherwise the buffer does not assign right
 pygame.mixer.init(frequency=48000, channels=2, size=16, buffer=512)#22050
 # Init pygame
 pygame.init()
-
 ############### Init environment
 # Show 800x600 window
-width, height = 400, 300
+width, height = 600, 450
 screen = pygame.display.set_mode([width, height])
-s_score = pygame.mixer.Sound("./sounds/TP_Get_Rupee.wav")
-s_hit = pygame.mixer.Sound("./sounds/HitSound.wav")
+s_score = pygame.mixer.Sound("sounds/TP_Get_Rupee.wav")
+s_hit = pygame.mixer.Sound("sounds/HitSound.wav")
 # Change window name
 pygame.display.set_caption("Travieso snake")
-gameFont = pygame.font.SysFont("Comic Sans", 40)
-
+gameFont = pygame.font.Font("fonts/comic.ttf", 40)
+#gameFont = pygame.font.SysFont("Comic Sans", 40)
 ############### Variables
-snake_start_position = [width/2, height/2]
+snake_start_position = [width/5, height/2]
 food_start_position = [random.randint(25,width-25),random.randint(25,height-25)]
 start_speed = [1, 0] # X, Y
 score=0;
 speed = start_speed
-snake = pygame.image.load("./images/snake.png")
+snake = pygame.image.load("images/snake.png")
 snakerect = snake.get_rect()
-food = pygame.image.load("./images/diamond2_res.png")
+food = pygame.image.load("images/diamond2_res.png")
 foodrect = food.get_rect()
-
 # Colors
 white = 255, 255, 255
 font = 200, 200, 200
@@ -98,7 +99,7 @@ while run:
 screen.fill(background)
 endTextSurface = gameFont.render('- YOU DIED -', 1, font)
 endScoreSurface = gameFont.render('Score: ' + str(score), 1, font)
-exitButton = pygame.image.load("./images/exit_button_black.png")
+exitButton = pygame.image.load("images/exit_button_black.png")
 exitButtonRect = exitButton.get_rect()
 screen.blit(endTextSurface, (width/2-(endTextSurface.get_width()/2), height/3-(endTextSurface.get_height()/2)))
 screen.blit(endScoreSurface, (width/2-(endScoreSurface.get_width()/2), height/2-(endScoreSurface.get_height()/2)))
