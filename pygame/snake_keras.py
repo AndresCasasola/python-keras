@@ -1,5 +1,6 @@
 
 import sys, pygame, random
+import math as m
 from neuralNet import neural_net
 
 ############### Definitions
@@ -26,7 +27,7 @@ class SmartSnake():
 		self.batch_size = batch_size
 		self.epsilon = epsilon
 		self.gamma = gamma
-		#self.model = neural_net([15, 16])
+		self.model = neural_net([15, 16])
 		self.experience = []
 
 ############### End screen
@@ -51,12 +52,21 @@ class SmartSnake():
 				if exitButtonRect.collidepoint(mpos):
 					exit = True
 
-############### Test colission
-	def collide(self, snakerect, foodrect):
-		if snakerect.colliderect(foodrect):
+############### Test food colission
+	def food_collide(self):
+		if self.snakerect.colliderect(self.foodrect):
 			return True
 		else:
 			return False
+
+############### Test frames colission
+	def frame_collide(self):
+		# Test frame collisions
+		if self.snakerect.left < 0 or self.snakerect.right > self.width:
+			return True
+		if self.snakerect.top < 0 or self.snakerect.bottom > self.height:
+			return True
+		return False
 
 ############### Draw background, snake, food, score and refresh screen
 	def draw_screen(self, screen):
@@ -67,6 +77,33 @@ class SmartSnake():
 		screen.blit(scoreSurface, (30, 30))
 		pygame.display.flip()
 
+############### Get current state in the form (snakeX, snakeY, foodX, foodY)
+	def get_current_state(self):
+		#print (self.snakerect.x, self.snakerect.y, self.foodrect.x, self.foodrect.y)
+		return (self.snakerect.x, self.snakerect.y, self.foodrect.x, self.foodrect.y)
+
+############### Get distance from snake to food
+	def get_distance(self):
+		return m.sqrt(m.pow((self.foodrect.x - self.snakerect.x),2) + m.pow((self.foodrect.y - self.snakerect.y),2))
+
+############### Get the reward for the neural network
+	def get_reward(self, last_state, current_state):
+		reward = 0
+		if self.frame_collide() == True:
+			return -500
+		last_distance = self.get_distance(last_state)
+		current_distance = self.get_distance(current_distance)
+		if self.current_distance < last_distance:  # A: If snake is closer to food
+			if self.food_collide() == True:  # B: If snake gets the food
+				reward = 100  # A
+			else:
+				reward = 10  # B
+		else:  # C: If snake is further
+			reward = -10  # C
+			
+		
+
+############### Game main function
 	def start_game(self):
 
 		# Init pygame
@@ -83,6 +120,9 @@ class SmartSnake():
 		self.snakerect.move_ip(snake_start_position)
 		self.foodrect.move_ip(food_start_position)
 		speed = start_speed		
+
+		## Game variables
+		state = self.get_current_state()
 		
 		## Start loop
 		run = True
@@ -105,19 +145,18 @@ class SmartSnake():
 			if keys[pygame.K_RIGHT]:
 				speed[0] = 1
 		
-			if self.collide(self.snakerect, self.foodrect) == True:
+			if self.food_collide() == True:
 				self.score = self.score + 1			
 				self.foodrect.move_ip(random.randint(25,self.width-25)-self.foodrect.x,random.randint(25,self.height-25)-self.foodrect.y)
+			
+			if self.frame_collide() == True:
+				run = False
 
 			# Move snake
 			self.snakerect = self.snakerect.move(speed)
-			# Test frame collisions
-			if self.snakerect.left < 0 or self.snakerect.right > self.width:
-				run = False
-			if self.snakerect.top < 0 or self.snakerect.bottom > self.height:
-				run = False
 			
 			self.draw_screen(self.screen)
+			self.get_current_state()
 			## End loop
 
 		

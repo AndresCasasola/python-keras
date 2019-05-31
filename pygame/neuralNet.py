@@ -10,7 +10,7 @@ def neural_net(hiddenLayerDims, LoadWeights=''):
     neuralNet = Sequential()
 
     # create the dense input layer
-    neuralNet.add(Dense(hiddenLayerDims[0], input_shape=(4,), input_dim=4))
+    neuralNet.add(Dense(hiddenLayerDims[0], input_shape=(4,)))
     neuralNet.add(Activation('sigmoid'))
 
     # create second layer (first hidden layer)
