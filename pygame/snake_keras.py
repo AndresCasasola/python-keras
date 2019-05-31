@@ -1,3 +1,17 @@
+###########################################################
+#
+# - Description: 
+#	SmartSnake  is  a  game  where   the   computer   uses 
+# 	reinforcement learning to train and learn to play.
+#
+# - This code is inspired on snakeGame uploaded in github:
+#   https://github.com/Bbowen100/SnakeGame.
+#
+#
+# - Author: Andres Casasola Dominguez.
+#
+###########################################################
+
 
 import sys, pygame, random
 import math as m
@@ -204,7 +218,7 @@ class SmartSnake():
 			if self.frame_collide() == True:
 				self.snakerect.move_ip(snake_start_position[0]-self.snakerect.x,snake_start_position[1]-self.snakerect.y)
 				self.foodrect.move_ip(random.randint(25,self.width-25)-self.foodrect.x,random.randint(25,self.height-25)-self.foodrect.y)
-				self.score = 0;
+				self.score = 0
 
 			
 			self.draw_screen(self.screen)
@@ -220,7 +234,15 @@ class SmartSnake():
 		self.end_screen()
 
 
-# Main
+## Understanding the behaviour of the machine learning of this game.
+# Playing with epochs and batch_size can be got differents behaviours of the neural network predictions.
+
+# "epochs" are the number of epochs that the neural network trains every time that frame gets the value of batch_size.
+# "batch_size" are the number of moves that the game do between every training. For this moves it could use two options:
+# 1) An aleatory number got from random() function 
+# 2) A prediction from the neural network.
+# The selection depends on the epsilon value.
+
 snake = SmartSnake(epochs=10, batch_size=1)
 snake.start_game()
 pygame.quit()
