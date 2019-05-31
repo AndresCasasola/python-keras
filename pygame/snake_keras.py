@@ -1,6 +1,7 @@
 
 import sys, pygame, random
 import math as m
+import numpy as np
 from neuralNet import neural_net
 
 ############### Definitions
@@ -33,7 +34,7 @@ class SmartSnake():
 ############### End screen
 	def end_screen(self):
 		self.screen.fill(background)
-		endTextSurface = self.gameFont.render('- YOU DIED -', 1, font)
+		endTextSurface = self.gameFont.render('- FINISHED -', 1, font)
 		endScoreSurface = self.gameFont.render('Score: ' + str(self.score), 1, font)
 		exitButton = pygame.image.load("images/exit_button_black.png")
 		exitButtonRect = exitButton.get_rect()
@@ -82,8 +83,12 @@ class SmartSnake():
 		return (self.snakerect.x, self.snakerect.y, self.foodrect.x, self.foodrect.y)
 
 ############### Get distance from snake to food
-	def get_distance(self):
-		return m.sqrt(m.pow((self.foodrect.x - self.snakerect.x),2) + m.pow((self.foodrect.y - self.snakerect.y),2))
+	#def get_distance(self):
+		#return m.sqrt(m.pow((self.foodrect.x - self.snakerect.x),2) + m.pow((self.foodrect.y - self.snakerect.y),2))
+
+############### Get distance from snake to food
+	def get_distance(self, state):
+		return m.sqrt(m.pow((state[2] - state[0]),2) + m.pow((state[3] - state[1]),2))
 
 ############### Get the reward for the neural network
 	def get_reward(self, last_state, current_state):
@@ -91,8 +96,8 @@ class SmartSnake():
 		if self.frame_collide() == True:
 			return -500
 		last_distance = self.get_distance(last_state)
-		current_distance = self.get_distance(current_distance)
-		if self.current_distance < last_distance:	# A: If snake is closer to food
+		current_distance = self.get_distance(current_state)
+		if current_distance < last_distance:	# A: If snake is closer to food
 			if self.food_collide() == True:	# B: If snake gets the food
 				reward = 100	# A
 			else:
@@ -126,48 +131,95 @@ class SmartSnake():
 		
 		## Start loop
 		run = True
-		while run:
-			pygame.time.delay(5) # ms
+		frame = 0
+		while (frame < self.epochs):
+			pygame.time.delay(10) # ms
+			speed = (0, 0)
 			# Capture events
 			for event in pygame.event.get():
-				# If QUIT event then exit
-				if event.type == pygame.QUIT: 
+				if event.type == pygame.QUIT:	# If QUIT event then exit
 					print ('Game closed')
 					sys.exit(0)
-			# Key events
-			keys = pygame.key.get_pressed()
-			if keys[pygame.K_UP] or keys[pygame.K_DOWN] or keys[pygame.K_LEFT] or keys[pygame.K_RIGHT]:
-				speed = [0, 0]
-			if keys[pygame.K_UP]:
-				speed[1] = -1
-			if keys[pygame.K_DOWN]:
-				speed[1] = 1
-			if keys[pygame.K_LEFT]:
-				speed[0] = -1
-			if keys[pygame.K_RIGHT]:
-				speed[0] = 1
-		
-			if self.food_collide() == True:
-				self.score = self.score + 1			
-				self.foodrect.move_ip(random.randint(25,self.width-25)-self.foodrect.x,random.randint(25,self.height-25)-self.foodrect.y)
-			
-			if self.frame_collide() == True:
-				run = False
 
+			# Decrease epsilon over the first half of training
+			if (self.epsilon > 0.1):
+				self.epsilon -= (0.9 / self.epochs)
+
+			# Decide which direction the snake will go
+			if ((random.random() < self.epsilon) and (frame < self.batch_size)):
+				# Take a random direction ['up','down','left','right']
+				action = random.choice([0, 1, 2, 3])
+				if action == 0: speed = (0, -1)
+				if action == 1: speed = (0, 1)
+				if action == 2: speed = (-1, 0)
+				if action == 3: speed = (1, 0)
+				print('Action:', action)
+			else:
+				# Get action prediction from the model
+				current_state = np.array(self.get_current_state())
+				prediction = self.model.predict(np.array([current_state])).flatten().tolist()
+				action = prediction.index(max(prediction))
+				if action == 0: speed = (0, -1)
+				if action == 1: speed = (0, 1)
+				if action == 2: speed = (-1, 0)
+				if action == 3: speed = (1, 0)
+				print('Prediction: ', np.around(prediction, 2), 'Action: ', action)
+
+			# Save last state
+			last_state = current_state
 			# Move snake
 			self.snakerect = self.snakerect.move(speed)
+			# Get current state
+			current_state = self.get_current_state()
+			# Get reward
+			reward = self.get_reward(last_state, current_state)
+
+			# Record experience
+			prediction_out = self.model.predict(np.array([last_state])).flatten().tolist()
+			prediction_out[action] = reward
+			experience = [last_state, prediction_out]
+			self.experience.append(experience)
+
+			# Train neural network
+			if(frame == self.batch_size):
+				# Get training set from experience
+				Xtrain = []
+				Ytrain = []
+				loss = 0
+				for ele in self.experience:
+					Xtrain.append(ele[0])
+					Ytrain.append(ele[1])
+
+				loss = self.model.fit(np.array(Xtrain), np.array(Ytrain), batch_size=self.batch_size, nb_epoch=self.epochs, verbose = 1)
+				# Reset frame and experience
+				frame = 0
+				self.experience = []
+
+			# Handle collides
+			if self.food_collide() == True:
+				self.score = self.score + 1		
+				self.foodrect.move_ip(random.randint(25,self.width-25)-self.foodrect.x,random.randint(25,self.height-25)-self.foodrect.y)
+			if self.frame_collide() == True:
+				self.snakerect.move_ip(snake_start_position[0]-self.snakerect.x,snake_start_position[1]-self.snakerect.y)
+				self.foodrect.move_ip(random.randint(25,self.width-25)-self.foodrect.x,random.randint(25,self.height-25)-self.foodrect.y)
+				self.score = 0;
+
 			
 			self.draw_screen(self.screen)
 			self.get_current_state()
+			frame += 1
 			## End loop
 
 		
 		## Show end screen when game finish
+		print(self.experience[0])
+		print(self.experience[1])
+		print(self.experience[2])
 		self.end_screen()
 
 
 # Main
-snake = SmartSnake()
+snake = SmartSnake(epochs=100)
 snake.start_game()
 pygame.quit()
 
