@@ -104,8 +104,8 @@ class SmartSnake():
 				reward = 10	# B
 		else:	# C: If snake is further to food
 			reward = -10	# C
+		return reward
 			
-		
 
 ############### Game main function
 	def start_game(self):
@@ -123,7 +123,7 @@ class SmartSnake():
 		start_speed = (1, 0) # X, Y
 		self.snakerect.move_ip(snake_start_position)
 		self.foodrect.move_ip(food_start_position)
-		speed = start_speed		
+		speed = start_speed
 
 		## Game variables
 		current_state = self.get_current_state()
@@ -132,6 +132,7 @@ class SmartSnake():
 		## Start loop
 		run = True
 		frame = 0
+		action = 0
 		while (frame < self.epochs):
 			pygame.time.delay(10) # ms
 			speed = (0, 0)
@@ -178,6 +179,7 @@ class SmartSnake():
 			prediction_out = self.model.predict(np.array([last_state])).flatten().tolist()
 			prediction_out[action] = reward
 			experience = [last_state, prediction_out]
+			print('Experience: ', experience, 'Reward: ', reward)
 			self.experience.append(experience)
 
 			# Train neural network
@@ -190,7 +192,7 @@ class SmartSnake():
 					Xtrain.append(ele[0])
 					Ytrain.append(ele[1])
 
-				loss = self.model.fit(np.array(Xtrain), np.array(Ytrain), batch_size=self.batch_size, nb_epoch=self.epochs, verbose = 1)
+				loss = self.model.fit(np.array(Xtrain), np.array(Ytrain), batch_size=self.batch_size, epochs=self.epochs, verbose = 0)
 				# Reset frame and experience
 				frame = 0
 				self.experience = []
@@ -219,7 +221,7 @@ class SmartSnake():
 
 
 # Main
-snake = SmartSnake(epochs=100)
+snake = SmartSnake(epochs=10, batch_size=1)
 snake.start_game()
 pygame.quit()
 

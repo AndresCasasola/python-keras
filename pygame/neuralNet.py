@@ -27,6 +27,6 @@ def neural_net(hiddenLayerDims, LoadWeights=''):
     # create the optimizer (Stochastic Gradient Descent)
     sgd = SGD(lr=0.01, decay=0.0, momentum=0.0, nesterov=False)
     # Use mean squared error loss and SGD as optimizer
-    neuralNet.compile(loss='mse', optimizer=sgd)
+    neuralNet.compile(loss='mse', optimizer=sgd, metrics=['accuracy'])
 
     return neuralNet
