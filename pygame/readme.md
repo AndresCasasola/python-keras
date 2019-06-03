@@ -16,3 +16,5 @@ The main code is *smart_snake.py*, others are for testing.
   </video>
 </figure>
 <!-- Video -->
+
+![Smart snake](https://github.com/AndresCasasola/python-keras/raw/master/resources/videos/snake_try1.mp4 "Smart snake")
