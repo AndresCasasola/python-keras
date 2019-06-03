@@ -9,4 +9,4 @@ The objetive of this section is to create games based on *pygame* library and th
 Smart snake is a game inspired in the original snake game, where the player is a neural network training.
 The main code is *smart_snake.py*, others are for testing.
 
-[![Smart snake](https://github.com/AndresCasasola/python-keras/raw/master/resources/images/smart_snake/smart_snake.png)](https://github.com/AndresCasasola/python-keras/raw/master/resources/videos/smart_snake/snake_try1.mp4 "Smart snake")
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-15eJkJkYmc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
