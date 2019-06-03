@@ -19,7 +19,7 @@ import numpy as np
 from neuralNet import neural_net
 
 ############### Definitions
-model_name = './saved_models/smart_snake_v1.h5'
+model_name = './saved_models/smart_snake_v3.h5'
 white = 255, 255, 255
 font = 200, 200, 200
 background = 60, 60, 60
@@ -195,7 +195,7 @@ class SmartSnake():
 
 			# Record experience
 			prediction_out = self.model.predict(np.array([last_state])).flatten().tolist()
-			prediction_out[action] = reward
+			#prediction_out[action] = reward
 			experience = [last_state, prediction_out]
 			print('Experience: ', experience, 'Reward: ', reward)
 			self.experience.append(experience)

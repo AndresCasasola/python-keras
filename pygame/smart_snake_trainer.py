@@ -12,12 +12,14 @@
 #
 ###########################################################
 
-
+# Generic libraries
 import sys, pygame, random
 import math as m
 import numpy as np
-from neuralNet import neural_net
 import os
+# Own libraries
+from neuralNet import neural_net
+from acsv import csvwrite_acc_loss
 
 ############### Definitions
 save_dir = os.path.join(os.getcwd(), 'saved_models')
@@ -157,6 +159,12 @@ class SmartSnake():
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:	# If QUIT event then exit
 					print ('Game closed')
+					# Save model weights
+					if not os.path.isdir(save_dir):
+						os.makedirs(save_dir)
+					model_path = os.path.join(save_dir, model_name)
+					self.model.save(model_path)
+					print('Saving trained model at %s ' % model_path)
 					sys.exit(0)
 
 			# Decrease epsilon over the first half of training
@@ -213,13 +221,6 @@ class SmartSnake():
 				# Reset frame and experience
 				frame = 0
 				self.experience = []
-				
-				########## Save model and weights
-				if not os.path.isdir(save_dir):
-					os.makedirs(save_dir)
-				model_path = os.path.join(save_dir, model_name)
-				self.model.save(model_path)
-				print('Saved trained model at %s ' % model_path)
 
 			# Handle collides
 			if self.food_collide() == True:
@@ -253,7 +254,7 @@ class SmartSnake():
 # 2) A prediction from the neural network.
 # The selection depends on the epsilon value.
 
-snake = SmartSnake(epochs=50, batch_size=10)
+snake = SmartSnake(epochs=200, batch_size=5)
 snake.start_game()
 pygame.quit()
 
