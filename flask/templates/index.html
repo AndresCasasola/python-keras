@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
+
+<head>
+  <title>Welcome to Andres' server</title>
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+  <link href="index.css" rel="stylesheet">
+</head>
+
 <body>
 
-	<h2>Andres server</h2>
+	<h1>Andres server</h1>
 	<p>These are some buttons</p>
-
 	<button onclick = "location.reload(true)"> Reload </button>
-
 	<button onclick = "window.open('http://www.google.com')"> Google </button>
-
 	<button onclick = "location.replace('page1')"> Page 1 </button>
 
-
 	<div class="jumbotron">
-	<h1>Input data</h1>
+	<h2>Input data</h2>
 	<form class="form-signin">
 	<label for="inputName" class="sr-only">Name</label>
 	<input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
@@ -22,13 +26,46 @@
 	<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
 	<label for="inputPassword" class="sr-only">Password</label>
 	<input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
-	 
 	<button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button> <!onclick = "location.replace('signUp')">
 	</form>
 	</div>
 
-	<script src="/home/andres/git/python-keras/flask/templates/jQuery.js"></script>
-	<script src="/home/andres/git/python-keras/flask/templates/click_function.js"></script>
+	<div class="jumbotron">
+	<h2>Output data</h2>
+    <form action = "http://localhost:5000/output" method = "get">
+      <p>Pull data:</p>
+      <p><input type = "text" name = "Name" placeholder = {{value}} /></p> <!-- Parameter 'value' -->
+			<p><input type = "submit" value = "Pull" /></p>
+    </form>
+	</div>
+
+
+	<!-- JavaScript code -->
+
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.js"
+		integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+		crossorigin="anonymous">
+	</script>
+
+	<!-- btnSignUp click function -- >
+	<script type="text/javascript">
+		$(function() {
+			$('#btnSignUp').click(function() {
+				$.ajax({
+					url: '/signUp',
+					data: $('form').serialize(),	// Takes everything inside <form> here </form>.
+					type: 'POST',
+					success: function(response) {
+				    console.log(response);
+					},
+					error: function(error) {
+				    console.log(error);
+					}
+				});
+			});
+		});
+	</script>
 
 </body>
 </html>
