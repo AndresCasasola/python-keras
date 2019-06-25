@@ -1,30 +1,33 @@
 
-import random
+from hashlib import md5
+from base64 import b64decode
+from base64 import b64encode
+
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
-import os
-from hashlib import md5
+from Crypto.Util.Padding import pad, unpad
+
+# Variables
+msg = input('Message: ')
+key = 'password'
 
 # Generating a Key
-#key = ''.join(chr(random.randint(0, 0xFF)) for i in range(16))
-key = get_random_bytes(AES.block_size)
 key = md5(key.encode('utf8')).digest()
-print ('key', [x for x in key])
-print ('Size', len(key) )
-
+print ('key: ', key)
 # Initialization Vector
-#iv = ''.join([chr(random.randint(0, 0xFF)) for i in range(16)])
 iv = get_random_bytes(AES.block_size)
-print ('iv', [x for x in iv])
-print ('Size', len(iv) )
+print ('iv: ', iv)
+# Create AES cipher
+cipher = AES.new(key, AES.MODE_CBC, iv)
+# Encrypting
+crypted_msg = b64encode(iv + cipher.encrypt(pad(msg.encode('utf-8'), AES.block_size)))
+print('Crypted message:', crypted_msg.decode('utf-8'))
 
-# Create AES encrypter object
-aes = AES.new(key, AES.MODE_CBC, iv)
-
-# Encrypting with AES
-data = 'Hello world 1234' # Must be 16 bytes
-encrypted_data = aes.encrypt(data)
-
-# Decrypting with AES
-decrypted_data = aes.decrypt(encrypted_data)
-print (decrypted_data.decode('utf-8'))
+# Get raw message
+raw = b64decode(crypted_msg)
+print ('raw: ', raw)
+# Create AES cipher
+cipher = AES.new(key, AES.MODE_CBC, raw[:AES.block_size])
+# Decrypting
+decrypted_msg = unpad(cipher.decrypt(raw[AES.block_size:]), AES.block_size)
+print('Decrypted message:', decrypted_msg.decode('utf-8'))
