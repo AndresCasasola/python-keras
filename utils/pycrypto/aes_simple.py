@@ -30,24 +30,20 @@ cipher = AES.new(key, AES.MODE_CBC, iv)
 # Pad(data, size) function joints/stores the data contained in 'data' in block of 'size' size
 # Example -> pad ('hello', 8) -> |h e l l o \n \n \n| -> fills empty slots with '\n'
 padded_msg = pad(msg.encode('utf-8'), AES.block_size)
-# Encode (iv + crypted_msg) into base 64 format
-crypted_msg = b64encode(iv + cipher.encrypt(padded_msg))
+# Encode crypted_msg into base 64 format
+crypted_msg = b64encode(cipher.encrypt(padded_msg))
 #print('Crypted message:', crypted_msg.decode('utf-8'))
 
 ### Get raw message
 # Decode base64 to byte format
-raw = b64decode(crypted_msg)
+rec_msg = b64decode(crypted_msg)
 #print ('raw:', raw)
 # Create AES cipher
-iv = raw[:AES.block_size]
 cipher = AES.new(key, AES.MODE_CBC, iv)
 
 ### Decrypting
-
-decrypted_msg = unpad(cipher.decrypt(raw[AES.block_size:]), AES.block_size)
+decrypted_msg = unpad(cipher.decrypt(rec_msg), AES.block_size)
 print('Decrypted message:', decrypted_msg.decode('utf-8'))
-
-
 
 
 
