@@ -1,0 +1,4 @@
+
+pip3 install pycryptodome
+pip3 install Pillow
+pip3 install numpy
