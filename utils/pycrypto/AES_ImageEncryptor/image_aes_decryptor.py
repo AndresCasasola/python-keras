@@ -10,10 +10,10 @@ from Crypto.Util.Padding import pad, unpad
 from PIL import Image
 import numpy as np
 
-#image_name = input("Input image name:")
-image_name = 'crypted_picture.png'
-#key = input("Input key:")
-key = 'andres'
+image_name = input("Input image name:")
+#image_name = 'crypted_picture.png'
+key = input("Input key:")
+#key = 'andres'
 #iv = input("Input initialization vector:")
 iv = b'\xf1\x99M6\x0fP\xf8\xba\xb0\\\xde\xb9^\xb4\xb9\\'
 
